@@ -28,7 +28,7 @@ template toOpenArray*(c: Character): untyped =
 template toOpenArray*(s: Unicode): untyped =
   toOpenArray(s.string, 0, s.string.len-1)
 
-func initCharacter*(s: Unicode, b: Slice[int]): Character {.inline.} =
+func initCharacter*(s: sink Unicode, b: Slice[int]): Character {.inline.} =
   ## Slice a unicode grapheme cluster out of a string.
   ## This does not create a copy of the string,
   ## but in exchange, the passed string must
@@ -36,7 +36,7 @@ func initCharacter*(s: Unicode, b: Slice[int]): Character {.inline.} =
   ## while the returned ``Character`` lives
   assert b.a <= b.b or b.a == b.b+1
   assert b.b < len(s.string) or b.a == b.b+1
-  shallowCopy(result.s, s.string)
+  result.s = s.string
   result.b = b
 
 func `$`*(c: Character): string {.inline.} =
